@@ -21,16 +21,22 @@ struct pet {
 
 
 void insert(pet **list, string name, string type, string breed, Gender gender, int age, float weight) {
-    pet *head;
-    head = (pet *)malloc(sizeof(pet));
-    head->name = name;
-    head->type = type;
-    head->breed = breed;
-    head->gender = gender;
-    head->age = age;
-    head->weight = weight;
-    head->next = (* list);
-    (*list) = head;
+    pet *head = new pet;
+    //head = (pet *)malloc(sizeof(pet));
+    try {
+        head->name = name;
+        head->type = type;
+        head->breed = breed;
+        head->gender = gender;
+        head->age = age;
+        head->weight = weight;
+        head->next = (* list);
+        (*list) = head;
+    } catch (const char * err) {
+        cout<<"\nErro: "<<err<<"\n";
+        throw;
+    }
+    
 }
 
 
@@ -54,19 +60,22 @@ void createPet(pet **list) {
     float weight;
 
     int tempGender;
+    try {
+        cout << "Informaï¿½ï¿½es do Pet a ser adicionado" << endl;
+        cout << "Nome: "; cin.ignore(); getline(cin, name); //name = input();
+        cout << "Espï¿½cie: "; type = input();
+        cout << "Raï¿½a: "; breed = input();
+        do {
+            cout << "Gï¿½nero (Fï¿½mea = 1 / Macho = 2): "; cin >> tempGender;
+        } while(tempGender != 1 && tempGender != 2);
+        gender = selectGender(tempGender - 1);
+        cout << "Idade: "; cin.ignore(); cin >> age;
+        cout << "Peso: "; cin.ignore(); cin >> weight;
 
-    cout << "Informações do Pet a ser adicionado" << endl;
-    cout << "Nome: "; name = input();
-    cout << "Espécie: "; type = input();
-    cout << "Raça: "; breed = input();
-    do {
-        cout << "Gênero (Fêmea = 1 / Macho = 2): "; cin >> tempGender;
-    } while(tempGender != 1 && tempGender != 2);
-    gender = selectGender(tempGender - 1);
-    cout << "Idade: "; cin.ignore(); cin >> age;
-    cout << "Peso: "; cin.ignore(); cin >> weight;
-
-    insert(list, name, type, breed, gender, age, weight);
+        insert(list, name, type, breed, gender, age, weight);
+    } catch (const char * err) {
+        cout<<"\nErro: "<<err<<"\n";
+    }
 }
 
 
@@ -75,10 +84,10 @@ void printPetRec(pet *list) {
         printPetRec(list->next);
         cout
             << "Nome: " << list->name << endl
-            << "Espécie: " << list->type << endl
-            << "Raça: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
-        else cout << "Gênero: Macho" << endl;
+            << "Espï¿½cie: " << list->type << endl
+            << "Raï¿½a: " << list->breed << endl;
+        if(list->gender == Female) cout << "Gï¿½nero: Fï¿½mea" << endl;
+        else cout << "Gï¿½nero: Macho" << endl;
         cout    
             << "Idade: " << list->age << " anos" << endl
             << "Peso: " << list->weight << " kg" << endl
@@ -86,6 +95,11 @@ void printPetRec(pet *list) {
     }
 }
 
+int removePet (int n, pet** l) {
+    
+
+    return 0;
+}
 
 int main() {
     setlocale(LC_ALL, "Portuguese");
@@ -93,9 +107,9 @@ int main() {
     int option;
     pet *list = NULL;
 
-    cout << "Bem-vindo à lista de Pets!\n";
+    cout << "Bem-vindo ï¿½ lista de Pets!\n";
     do {
-        cout << "\n\nMenu de Opções\n\n";
+        cout << "\n\nMenu de Opï¿½ï¿½es\n\n";
         cout << "1 - Inserir na lista de pets" << endl;
         cout << "2 - Imprimir a lista de pets" << endl;
         cout << "0 - Sair do Programa" << endl;
