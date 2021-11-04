@@ -27,7 +27,7 @@ void input(int n, no **lista){
 
 void print(no* lista){
     if (lista != NULL){
-        cout << "\nLista imprimida: ";
+        cout << "\nLista impressa: ";
         cout << "\n[ ";
         while (lista!=NULL){
             cout << " ("<< lista->codigo << ") ";
@@ -53,7 +53,7 @@ void printinverso(no* lista)
     }
     lista = lista_invertida;
     if (lista_invertida!=NULL){
-        cout << "\nLista imprimida: ";
+        cout << "\nLista impressa: ";
         cout << "\n[ ";
         while (lista_invertida!=NULL){
             cout << " ("<< lista_invertida->codigo << ") ";
@@ -131,31 +131,46 @@ int remove_elem_n (no **lista, int n) {
 
 
     if (lista == NULL) return 0;
-    no* aux = (no*) malloc(sizeof(no));
-    no* anterior = (no*) malloc(sizeof(no));
-    int removed = 0;
-    while (aux && !removed) {
-        anterior = aux;
-        if (aux->prox->codigo == n) {
-            aux->prox = aux->prox->prox;
-            removed = 1;
-        }
-        aux = aux->prox;
-    }
-    cout<<"\nchegou aqui\n";
-    if (removed) {
-        //alterar lista
-        while (*lista) {
-            if ((*lista)->codigo == anterior->codigo) {
-                *lista = aux;
-                return 1;
-            }
-            *lista = (*lista)->prox;
-        }
+
+    if ( (*lista)->codigo == n ) {
+        (*lista) = (*lista)->prox;
         return 1;
     }
 
+    no* aux = (no*) malloc(sizeof(no));
+    no* anterior = (no*) malloc(sizeof(no));
+    anterior = *(lista);
+    aux = anterior->prox;
+    int removed = 0;
+    
+    while (aux && !removed) {
+        if (aux->codigo == n) {
+            anterior->prox = aux->prox;
+            removed = 1;
+        } else{
+            anterior = aux;
+            aux = aux->prox;
+        }
+    }
+    cout<<"A ser removido: "<<aux->codigo<<"\nAnterior: "<<anterior->codigo<<"\nSubstituir removido por: "<<anterior->prox->codigo<<"\n";
+    
+    if (removed) {
+        //alterar lista
+        while ((*lista)) {
+            if ((*lista)->codigo == anterior->codigo) {
+                (*lista) = anterior;
+                return 1;
+            } else
+                (*lista) = (*lista)->prox;
+        }
+
+        
+
+        return 1;
+    } else cout<<"\nnao foi removido\n";
+
     return 0;
+    
 }
 
 int remove_first(no **lista){
