@@ -2,7 +2,6 @@
 // Ariane Paula Barros - RA: 21011817
 // Guilherme Zanoni Guidetti - RA: 21001718
 // Henrique Vergili de Freitas Dias - RA: 21005466
-// Leonardo Hana Bersello - RA: 
 
 #include <iostream>
 #include <iomanip>
