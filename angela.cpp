@@ -77,59 +77,6 @@ int search(int n, no *lista){
 }
 
 int remove_elem_n (no **lista, int n) {
-    /* 
-    CODIGO DO STACKOVERFLOW
-    if(!(*l)) // encerra se não houver item na lista
-        return 0;
-
-    ldisp *aux = (*l);
-    if((*l)->idAviao == id){ // verifica se posição == 0
-        (*l) = (*l)->prox; // coloca a lista no próximo item
-        free(aux); // limpa a memória
-
-        return 1; // finaliza com verdadeiro
-    }
-
-    ldisp *prev;
-    while(aux){ // verifica se aux não chegou ao fim e percorre a posição
-        prev = aux; // prev guarda valor da remoção
-        aux = aux->prox;
-        if(aux && aux->idAviao == id){ // verifica o id do avião
-            prev->prox = aux->prox;
-            free(aux);
-            return 1;
-        }
-    }
-    return 0;
-    }
-    */
-    /* 
-    CODIGO DO STACKOVERFLOW MODIFICADO PRA RODAR AQUI
-    if((*lista == NULL))
-        return 0;
-
-    no *aux = (*lista);
-    no *ant;
-
-    if((*lista)->codigo == n){
-        (*lista) = (*lista)->prox;
-        free(aux);
-        return 1;
-    }
-    while(aux){
-        ant = aux;
-        aux = aux->prox;
-        if(aux->codigo == n){
-            ant->prox = aux->prox;
-            free(aux);
-            return 1;
-        }
-    }
-    return 0;
-    }*/
-
-
-
     if (lista == NULL) return 0;
 
     if ( (*lista)->codigo == n ) {
@@ -139,36 +86,21 @@ int remove_elem_n (no **lista, int n) {
 
     no* aux = (no*) malloc(sizeof(no));
     no* anterior = (no*) malloc(sizeof(no));
-    anterior = *(lista);
-    aux = anterior->prox;
+    aux = (*lista);
     int removed = 0;
     
-    while (aux && !removed) {
+    while (aux && removed != 1) {
         if (aux->codigo == n) {
             anterior->prox = aux->prox;
-            removed = 1;
+            free(aux);                                 
+            return 1;
         } else{
             anterior = aux;
             aux = aux->prox;
         }
     }
-    cout<<"A ser removido: "<<aux->codigo<<"\nAnterior: "<<anterior->codigo<<"\nSubstituir removido por: "<<anterior->prox->codigo<<"\n";
-    
-    if (removed) {
-        //alterar lista
-        while ((*lista)) {
-            if ((*lista)->codigo == anterior->codigo) {
-                (*lista) = anterior;
-                return 1;
-            } else
-                (*lista) = (*lista)->prox;
-        }
-
-        
-
-        return 1;
-    } else cout<<"\nnao foi removido\n";
-
+    //cout<<"A ser removido: "<<aux->codigo<<"\nAnterior: "<<anterior->codigo<<"\nSubstituir removido por: "<<anterior->prox->codigo<<"\n";
+   
     return 0;
     
 }
