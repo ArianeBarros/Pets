@@ -4,15 +4,19 @@
 #include <ctime>
 #include <string.h>
 
+// Coisas a serem mudadas: 
+// Ver o vídeo do Nakamiti para adicionar a leitura de arquivos baseada em struct
+// Mudar os dados linha 61 para uma criação de struct e chamar cada valor fazendo struct.valor
+
 using namespace std;
 
 enum Gender {Female, Male};
 enum Behavior {Calm, Docile, Lonely, Aggressive};
 
 struct pet {
-    string name;
-    string type;
-    string breed;
+    char name[21];
+    char type[11];
+    char breed[26];
     Gender gender;
     int age;
     float weight;
@@ -20,20 +24,20 @@ struct pet {
 };
 
 
-void insert(pet **list, string name, string type, string breed, Gender gender, int age, float weight) {
+void insert(pet **list, char name[], char type[], char breed[], Gender gender, int age, float weight) {
     pet *head = new pet;
     //head = (pet *)malloc(sizeof(pet));
     try {
-        head->name = name;
-        head->type = type;
-        head->breed = breed;
+        strcpy(head->name, name);
+        strcpy(head->type, type);
+        strcpy(head->breed, breed);
         head->gender = gender;
         head->age = age;
         head->weight = weight;
         head->next = (* list);
         (*list) = head;
     } catch (const char * err) {
-        cout<<"\nErro: "<<err<<"\n";
+        cout<<"\nErro: " << err << "\n";
         throw;
     }
     
@@ -45,36 +49,25 @@ Gender selectGender(int option) {
 }
 
 
-string input() {
-    string temp;
-    cin.ignore();
-    getline(cin, temp);
-    return temp;
-}
-
-
 void createPet(pet **list) {
-    string name, type, breed;
-    Gender gender;
-    int age;
-    float weight;
+    pet data;
 
     int tempGender;
     try {
-        cout << "Informaï¿½ï¿½es do Pet a ser adicionado" << endl;
-        cout << "Nome: "; cin.ignore(); getline(cin, name); //name = input();
-        cout << "Espï¿½cie: "; type = input();
-        cout << "Raï¿½a: "; breed = input();
+        cout << "Informações do Pet a ser adicionado" << endl;
+        cout << "Nome: "; cin >> data.name; //name = input();
+        cout << "Espécie: "; cin >> data.type;
+        cout << "Raça: "; cin >> data.breed;
         do {
-            cout << "Gï¿½nero (Fï¿½mea = 1 / Macho = 2): "; cin >> tempGender;
+            cout << "Gênero (Fêmea = 1 / Macho = 2): "; cin >> tempGender;
         } while(tempGender != 1 && tempGender != 2);
-        gender = selectGender(tempGender - 1);
-        cout << "Idade: "; cin.ignore(); cin >> age;
-        cout << "Peso: "; cin.ignore(); cin >> weight;
+        data.gender = selectGender(tempGender - 1);
+        cout << "Idade: "; cin >> data.age;
+        cout << "Peso: "; cin >> data.weight;
 
-        insert(list, name, type, breed, gender, age, weight);
-    } catch (const char * err) {
-        cout<<"\nErro: "<<err<<"\n";
+        insert(list, data.name, data.type, data.breed, data.gender, data.age, data.weight);
+    } catch (const char *err) {
+        cout<<"\nErro: " << err << endl;
     }
 }
 
@@ -84,10 +77,10 @@ void printPetRec(pet *list) {
         printPetRec(list->next);
         cout
             << "Nome: " << list->name << endl
-            << "Espï¿½cie: " << list->type << endl
-            << "Raï¿½a: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gï¿½nero: Fï¿½mea" << endl;
-        else cout << "Gï¿½nero: Macho" << endl;
+            << "Espécie: " << list->type << endl
+            << "Raça: " << list->breed << endl;
+        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
+        else cout << "Gênero: Macho" << endl;
         cout    
             << "Idade: " << list->age << " anos" << endl
             << "Peso: " << list->weight << " kg" << endl
@@ -104,12 +97,18 @@ int removePet (int n, pet** l) {
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
+    /*FILE *petData;
+    if((petData = fopen("pet_data.txt", "r+")) == NULL) {
+        cout << "Arquivo não existente, criando um novo" << endl;
+        petData = fopen("pet_data.txt", "w+");
+    }*/
+
     int option;
     pet *list = NULL;
 
-    cout << "Bem-vindo ï¿½ lista de Pets!\n";
+    cout << "Bem-vindo à lista de Pets!\n";
     do {
-        cout << "\n\nMenu de Opï¿½ï¿½es\n\n";
+        cout << "\n\nMenu de Opções\n\n";
         cout << "1 - Inserir na lista de pets" << endl;
         cout << "2 - Imprimir a lista de pets" << endl;
         cout << "0 - Sair do Programa" << endl;
@@ -121,4 +120,8 @@ int main() {
             break;
         }
     } while(option != 0);
+
+    //fclose(petData);
+
+    return 0;
 }
