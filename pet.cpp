@@ -5,8 +5,8 @@
 #include <string.h>
 
 // Coisas a serem mudadas: 
-// Ver o vídeo do Nakamiti para adicionar a leitura de arquivos baseada em struct
-// Mudar os dados linha 61 para uma criação de struct e chamar cada valor fazendo struct.valor
+// Ver o vï¿½deo do Nakamiti para adicionar a leitura de arquivos baseada em struct
+// Mudar os dados linha 61 para uma criaï¿½ï¿½o de struct e chamar cada valor fazendo struct.valor
 
 using namespace std;
 
@@ -54,12 +54,13 @@ void createPet(pet **list) {
 
     int tempGender;
     try {
-        cout << "Informações do Pet a ser adicionado" << endl;
+        cout << "\n=-=-=-=-=-=- Informaï¿½ï¿½es do Pet a ser adicionado -=-=-=-=-=-=\n" << endl;
         cout << "Nome: "; cin >> data.name; //name = input();
-        cout << "Espécie: "; cin >> data.type;
-        cout << "Raça: "; cin >> data.breed;
+        cout << "Espï¿½cie: "; cin >> data.type;
+        cout << "Raï¿½a: "; cin >> data.breed;
         do {
-            cout << "Gênero (Fêmea = 1 / Macho = 2): "; cin >> tempGender;
+            cin.ignore();
+            cout << "Gï¿½nero (Fï¿½mea = 1 / Macho = 2): "; cin >> tempGender;
         } while(tempGender != 1 && tempGender != 2);
         data.gender = selectGender(tempGender - 1);
         cout << "Idade: "; cin >> data.age;
@@ -77,10 +78,10 @@ void printPetRec(pet *list) {
         printPetRec(list->next);
         cout
             << "Nome: " << list->name << endl
-            << "Espécie: " << list->type << endl
-            << "Raça: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
-        else cout << "Gênero: Macho" << endl;
+            << "Espï¿½cie: " << list->type << endl
+            << "Raï¿½a: " << list->breed << endl;
+        if(list->gender == Female) cout << "Gï¿½nero: Fï¿½mea" << endl;
+        else cout << "Gï¿½nero: Macho" << endl;
         cout    
             << "Idade: " << list->age << " anos" << endl
             << "Peso: " << list->weight << " kg" << endl
@@ -94,29 +95,97 @@ int removePet (int n, pet** l) {
     return 0;
 }
 
+
+int getCount(pet *list) {
+    
+    if (!list) return 0;
+
+    int qtd = 0;
+
+    while (list) {
+        qtd++;
+        list = list->next;
+    }
+    
+
+    return qtd;
+}
+
+pet* searchByType(pet *list, char type[11]) {
+    pet* found;
+
+    if (!list) { cout << "\nNenhum pet cadastrado!"; return NULL; }
+    
+    while (list) {
+        if (list->type == type) {
+            pet* aux = found;
+            found = list;
+            found->next = aux;
+        }
+        list = list->next;
+    }
+    
+    if ( found ) {
+        cout << "\n[" << getCount( found ) << "] pets da especie [" << type << "] foram encontrados";
+        printPetRec (found);
+    }
+    else { cout << "\nNenhum pet da especie [" << type << "] foi cadastrado."; }
+
+    return found;
+}
+
+pet* searchByTypeAndBreed(pet *list) {
+    pet* found;
+
+    
+
+    return found;
+}
+
+pet* searchByTypeBreedAndGender(pet *list) {
+    pet* found;
+
+    
+
+    return found;
+}
+
+
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
     /*FILE *petData;
     if((petData = fopen("pet_data.txt", "r+")) == NULL) {
-        cout << "Arquivo não existente, criando um novo" << endl;
+        cout << "Arquivo nï¿½o existente, criando um novo" << endl;
         petData = fopen("pet_data.txt", "w+");
     }*/
 
     int option;
     pet *list = NULL;
 
-    cout << "Bem-vindo à lista de Pets!\n";
+    cout << "Bem-vindo ï¿½ lista de Pets!\n";
     do {
-        cout << "\n\nMenu de Opções\n\n";
-        cout << "1 - Inserir na lista de pets" << endl;
-        cout << "2 - Imprimir a lista de pets" << endl;
-        cout << "0 - Sair do Programa" << endl;
+        cout << "\n\nMenu de Opï¿½ï¿½es\n";
+        cout << "\n1 - Inserir na lista de pets" << endl;
+        cout << "\n2 - Imprimir a lista de pets" << endl;
+        cout << "\n3 - Buscar por especie" << endl;
+        cout << "\n4 - Quantidade de pets cadastrados" << endl;
+        cout << "\n0 - Sair do Programa" << endl;
+        cout << "\nDigite a opcao desejada: ";
         cin >> option;
         switch (option) {
         case 1: createPet(&list);
             break;
         case 2:printPetRec(list);
+            break;
+
+        case 3:
+            char t[11];
+            cout << "\nDigite a especie a ser buscada: "; cin >> t;
+            searchByType(list, t);
+            break;
+
+        case 4: cout << "\nTemos [" << getCount(list) << "] pets cadastrados" << endl;
             break;
         }
     } while(option != 0);
