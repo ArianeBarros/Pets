@@ -112,25 +112,25 @@ int getCount(pet *list) {
 }
 
 pet* searchByType(pet *list, char type[11]) {
-    pet* found;
+    pet* found = NULL;
 
     if (!list) { cout << "\nNenhum pet cadastrado!"; return NULL; }
     
     while (list) {
-        if (list->type == type) {
-            pet* aux = found;
-            found = list;
-            found->next = aux;
+        if (strcmp(list->type, type) == 0) {
+            pet* aux = list;
+            aux->next = found;
+            found = aux;
         }
         list = list->next;
     }
     
     if ( found ) {
-        cout << "\n[" << getCount( found ) << "] pets da especie [" << type << "] foram encontrados";
+        cout << "\n[" << getCount( found ) << "] pets da especie [" << type << "] foram encontrados\n";
         printPetRec (found);
     }
-    else { cout << "\nNenhum pet da especie [" << type << "] foi cadastrado."; }
-
+    else { cout << "\nNenhum pet da especie [" << type << "] foi cadastrado."; return NULL;}
+    
     return found;
 }
 
