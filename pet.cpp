@@ -208,7 +208,6 @@ int getCount(pet *list) {
     return count;
 }
 
-
 int getCountType(pet *list) {
     if (list == NULL) return 0;
 
@@ -218,13 +217,15 @@ int getCountType(pet *list) {
     cout << "Digite a esp�cie do pet a ser buscado: ";
     cin >> type;
     cin.ignore();
+    tolower(*type);
 
-    while(list && strcmp(list->type, type) == 0) {
-        count++;
+    while(list) {
+        if(strcmp(list->type, type) == 0) {
+            count++;
+        }
         list = list->next;
     }
-
-    return count;
+    cout << "Encontrado [ " << count << " ] Pets da esp�cie " << type << endl;
 }
 
 /*
