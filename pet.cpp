@@ -6,7 +6,7 @@
 
 // Coisas a serem mudadas: 
 // Ver o vï¿½deo do Nakamiti para adicionar a leitura de arquivos baseada em struct
-// Mudar os dados linha 61 para uma criaï¿½ï¿½o de struct e chamar cada valor fazendo struct.valor
+// Mudar os dados linha 61 para uma criaï¿½ão de struct e chamar cada valor fazendo struct.valor
 
 using namespace std;
 
@@ -23,7 +23,19 @@ struct pet {
     struct pet* next;
 };
 
+//INICIALIZANDO AS FUNÇÕES
+void insertEnd(pet **list, char name[], char type[], char breed[], Gender gender, int age, float weight);
+void createPet(pet **list);
+void printPetRec(pet *list);
+void removePet (pet **list);
+void changePet(pet **list);
+int getCount(pet *list);
+int getCountType(pet *list);
+void searchByName(pet *list);
+void searchByType(pet *list);
+void searchByTypeAndBreed(pet *list);
 
+int getCount(pet *list);
 /*
 void insertStart(pet **list, char name[], char type[], char breed[], Gender gender, int age, float weight) {
     pet *head = new pet;
@@ -81,13 +93,19 @@ void createPet(pet **list) {
 
     int tempGender;
     try {
-        cout << "\n=-=-=-=-=-=- Informaï¿½ï¿½es do Pet a ser adicionado -=-=-=-=-=-=\n" << endl;
+        cout << "\n=-=-=-=-=-=- Informações do Pet a ser adicionado -=-=-=-=-=-=\n" << endl;
         cout << "Nome: "; cin >> data.name; //name = input();
-        cout << "Espï¿½cie: "; cin >> data.type;
-        cout << "Raï¿½a: "; cin >> data.breed;
+        cout << "Espécie: "; cin >> data.type;
+        cout << "raça: "; cin >> data.breed;
         do {
             cin.ignore();
-            cout << "Gï¿½nero (Fï¿½mea = 1 / Macho = 2): "; cin >> tempGender;
+			if (cin.fail())
+        	{
+            cin.clear();
+            cin.ignore(1200, '\n');
+            cout << "Utilize somente números.\n";
+        	}while(cin.fail());
+            cout << "Gênero (Fêmea = 1 / Macho = 2): "; cin >> tempGender;
         } while(tempGender != 1 && tempGender != 2);
         data.gender = selectGender(tempGender - 1);
         cout << "Idade: "; cin >> data.age;
@@ -106,10 +124,10 @@ void printPetRec(pet *list) {
         if(list) {
             cout
                 << "Nome: " << list->name << endl
-                << "Espï¿½cie: " << list->type << endl
-                << "Raï¿½a: " << list->breed << endl;
-            if(list->gender == Female) cout << "Gï¿½nero: Fï¿½mea" << endl;
-            else cout << "Gï¿½nero: Macho" << endl;
+                << "Espécie: " << list->type << endl
+                << "Raça: " << list->breed << endl;
+            if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
+            else cout << "Gênero: Macho" << endl;
             cout    
                 << "Idade: " << list->age << " anos" << endl
                 << "Peso: " << list->weight << " kg" << endl
@@ -132,9 +150,9 @@ void removePet (pet **list) {
     // Target anda atï¿½ que ele encontre o nome ou seja NULL
     while(target && strcmp(target->name, name) != 0) target = target->next;
 
-    // Se target ï¿½ NULL, nï¿½o encontrou o nome
+    // Se target ï¿½ NULL, não encontrou o nome
     if(target == NULL) {
-        cout << "Pet " << name << " nï¿½o encontrado!" << endl;
+        cout << "Pet " << name << " não encontrado!" << endl;
         return;
     }
     else {
@@ -166,9 +184,9 @@ void changePet(pet **list) {
     // Target anda atï¿½ que ele encontre o nome ou seja NULL
     while(target && strcmp(target->name, name) != 0) target = target->next;
 
-    // Se target ï¿½ NULL, nï¿½o encontrou o nome
+    // Se target ï¿½ NULL, não encontrou o nome
     if(target == NULL) {
-        cout << "Pet " << name << " nï¿½o encontrado!" << endl;
+        cout << "Pet " << name << " não encontrado!" << endl;
         return;
     }
     else {
@@ -176,13 +194,13 @@ void changePet(pet **list) {
 
         int tempGender;
         try {
-            cout << "\n=-=-=-=-=-=- Informaï¿½ï¿½es do Pet a ser adicionado -=-=-=-=-=-=\n" << endl;
+            cout << "\n=-=-=-=-=-=- Informações do Pet a ser adicionado -=-=-=-=-=-=\n" << endl;
             cout << "Novo nome: "; cin >> target->name;
-            cout << "Nova espï¿½cie: "; cin >> target->type;
-            cout << "Nova raï¿½a: "; cin >> target->breed;
+            cout << "Nova espécie: "; cin >> target->type;
+            cout << "Nova raça: "; cin >> target->breed;
             do {
                 cin.ignore();
-                cout << "Novo gï¿½nero (Fï¿½mea = 1 / Macho = 2): "; cin >> tempGender;
+                cout << "Novo gênero (Fêmea = 1 / Macho = 2): "; cin >> tempGender;
             } while(tempGender != 1 && tempGender != 2);
             target->gender = selectGender(tempGender - 1);
             cout << "Nova idade: "; cin >> target->age;
@@ -217,7 +235,7 @@ int getCountType(pet *list) {
     char type[11];
     int count = 0;
 
-    cout << "Digite a espï¿½cie do pet a ser buscado: ";
+    cout << "Digite a espécie do pet a ser buscado: ";
     cin >> type;
     cin.ignore();
     tolower(*type);
@@ -247,10 +265,10 @@ pet* searchByType(pet *list, char type[11]) {
     }
     
     if ( found ) {
-        cout << "\n[" << getCount( found ) << "] pets da espï¿½cie [" << type << "] foram encontrados\n";
+        cout << "\n[" << getCount( found ) << "] pets da espécie [" << type << "] foram encontrados\n";
         printPetRec (found);
     }
-    else { cout << "\nNenhum pet da espï¿½cie [" << type << "] foi cadastrado."; return NULL;}
+    else { cout << "\nNenhum pet da espécie [" << type << "] foi cadastrado."; return NULL;}
     
     return found;
 }
@@ -268,18 +286,18 @@ void searchByName(pet *list) {
     // Target anda atï¿½ que ele encontre o nome ou seja NULL
     while(target && strcmp(target->name, name) != 0) target = target->next;
 
-    // Se target ï¿½ NULL, nï¿½o encontrou o nome
+    // Se target ï¿½ NULL, não encontrou o nome
     if(target == NULL) {
-        cout << "Pet " << name << " nï¿½o encontrado!" << endl;
+        cout << "Pet " << name << " não encontrado!" << endl;
         return;
     }
     else {
         cout
             << "Nome: " << list->name << endl
-            << "Espï¿½cie: " << list->type << endl
-            << "Raï¿½a: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gï¿½nero: Fï¿½mea" << endl;
-        else cout << "Gï¿½nero: Macho" << endl;
+            << "Espécie: " << list->type << endl
+            << "raça: " << list->breed << endl;
+        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
+        else cout << "Gênero: Macho" << endl;
         cout    
             << "Idade: " << list->age << " anos" << endl
             << "Peso: " << list->weight << " kg" << endl
@@ -292,7 +310,7 @@ void searchByType(pet *list) {
     char type[11];
     int count = 0;
 
-    cout << "Digite a espï¿½cie do pet a ser buscado: ";
+    cout << "Digite a espécie do pet a ser buscado: ";
     cin >> type;
     cin.ignore();
     tolower(*type);
@@ -301,10 +319,10 @@ void searchByType(pet *list) {
         if(strcmp(list->type, type) == 0) {
             cout
                 << "Nome: " << list->name << endl
-                << "Espï¿½cie: " << list->type << endl
-                << "Raï¿½a: " << list->breed << endl;
-            if(list->gender == Female) cout << "Gï¿½nero: Fï¿½mea" << endl;
-            else cout << "Gï¿½nero: Macho" << endl;
+                << "Espécie: " << list->type << endl
+                << "Raça: " << list->breed << endl;
+            if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
+            else cout << "Gênero: Macho" << endl;
             cout    
                 << "Idade: " << list->age << " anos" << endl
                 << "Peso: " << list->weight << " kg" << endl
@@ -313,7 +331,7 @@ void searchByType(pet *list) {
         }
         list = list->next;
     }
-    cout << "Encontrado " << count << " pets com a espï¿½cie " << type << endl;
+    cout << "Encontrado " << count << " pets com a espécie " << type << endl;
 }
 
 
@@ -322,12 +340,12 @@ void searchByTypeAndBreed(pet *list) {
     char breed[21];
     int count = 0;
 
-    cout << "Digite a espï¿½cie do pet a ser buscado: ";
+    cout << "Digite a espécie do pet a ser buscado: ";
     cin >> type;
     cin.ignore();
     tolower(*type);
 
-    cout << "Digite a raï¿½a do pet a ser buscado: ";
+    cout << "Digite a raça do pet a ser buscado: ";
     cin >> breed;
     cin.ignore();
     tolower(*breed);
@@ -336,10 +354,10 @@ void searchByTypeAndBreed(pet *list) {
         if(strcmp(list->type, type) == 0 && strcmp(list->breed, breed) == 0) {
             cout
             << "Nome: " << list->name << endl
-            << "Espï¿½cie: " << list->type << endl
-            << "Raï¿½a: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gï¿½nero: Fï¿½mea" << endl;
-        else cout << "Gï¿½nero: Macho" << endl;
+            << "Espécie: " << list->type << endl
+            << "Raça: " << list->breed << endl;
+        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
+        else cout << "Gênero: Macho" << endl;
         cout    
             << "Idade: " << list->age << " anos" << endl
             << "Peso: " << list->weight << " kg" << endl
@@ -348,7 +366,7 @@ void searchByTypeAndBreed(pet *list) {
         }
         list = list->next;
     }
-    cout << "Encontrado " << count << " pets da espï¿½cie " << type << " e raï¿½a " << breed << endl;
+    cout << "Encontrado " << count << " pets da espécie " << type << " e raça " << breed << endl;
 }
 
 void searchByTypeBreedAndGender(pet *list) {
@@ -357,16 +375,16 @@ void searchByTypeBreedAndGender(pet *list) {
     int gender;
     int count = 0;
 
-    cout << "Digite a espï¿½cie do pet a ser buscado: ";
+    cout << "Digite a espécie do pet a ser buscado: ";
     cin >> type;
     cin.ignore();
 
-    cout << "Digite a raï¿½a do pet a ser buscado: ";
+    cout << "Digite a raça do pet a ser buscado: ";
     cin >> breed;
     cin.ignore();
 
     do {
-        cout << "Gï¿½nero (Fï¿½mea = 1 / Macho = 2): ";
+        cout << "Gênero (Fêmea = 1 / Macho = 2): ";
         cin >> gender;
     } while(gender != 1 && gender != 2);
 
@@ -374,10 +392,10 @@ void searchByTypeBreedAndGender(pet *list) {
         if(strcmp(list->type, type) == 0 && strcmp(list->breed, breed) == 0 && list->gender == selectGender(gender - 1)) {
             cout
             << "Nome: " << list->name << endl
-            << "Espï¿½cie: " << list->type << endl
-            << "Raï¿½a: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gï¿½nero: Fï¿½mea" << endl;
-        else cout << "Gï¿½nero: Macho" << endl;
+            << "Espécie: " << list->type << endl
+            << "Raça: " << list->breed << endl;
+        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
+        else cout << "Gênero: Macho" << endl;
         cout    
             << "Idade: " << list->age << " anos" << endl
             << "Peso: " << list->weight << " kg" << endl
@@ -387,9 +405,9 @@ void searchByTypeBreedAndGender(pet *list) {
         list = list->next;
     }
     cout << "Encontrado " << count << " pets ";
-    if(selectGender(gender - 1) == Female) cout << "fï¿½mea";
+    if(selectGender(gender - 1) == Female) cout << "fêmea";
     else cout << "macho";
-    cout << " da espï¿½cie " << type << " e raï¿½a " << breed << endl;
+    cout << " da espécie " << type << " e raça " << breed << endl;
 }
 
 
@@ -398,7 +416,7 @@ int main() {
 
     /*FILE *petData;
     if((petData = fopen("pet_data.txt", "r+")) == NULL) {
-        cout << "Arquivo nï¿½o existente, criando um novo" << endl;
+        cout << "Arquivo não existente, criando um novo" << endl;
         petData = fopen("pet_data.txt", "w+");
     }*/
 
@@ -407,21 +425,21 @@ int main() {
     pet *list = NULL;
 
 
-    cout << "Bem-vindo ï¿½ lista de Pets!\n";
+    cout << "Bem-vindo à lista de Pets!\n";
     do {
-        cout << "\n\nMenu de Opï¿½ï¿½es" << endl;
+        cout << "\n\nMenu de Opções" << endl;
         cout << "1 - Inserir na lista de pets" << endl;
         cout << "2 - Remover na lista de pets" << endl;
-        cout << "3 - Alterar informaï¿½ï¿½o de um pet" << endl;
+        cout << "3 - Alterar informação de um pet" << endl;
         cout << "4 - Buscar um pet por nome" << endl;
-        cout << "5 - Filtrar a lista de pets por espï¿½cie" << endl;
-        cout << "6 - Filtrar a lista de pets por espï¿½cie e raï¿½a" << endl;
-        cout << "7 - Filtrar a lista de pets por espï¿½cie, raï¿½a e sexo" << endl;
+        cout << "5 - Filtrar a lista de pets por espécie" << endl;
+        cout << "6 - Filtrar a lista de pets por espécie e raça" << endl;
+        cout << "7 - Filtrar a lista de pets por espécie, raça e sexo" << endl;
         cout << "8 - Quantidade de pets na lista" << endl;
-        cout << "9 - Quantidade de pets de uma espï¿½cie" << endl;
+        cout << "9 - Quantidade de pets de uma espécie" << endl;
         cout << "10 - Imprimir a lista de pets" << endl;
         cout << "0 - Sair do Programa" << endl;
-        cout << "\nDigite a opï¿½ï¿½o desejada: ";
+        cout << "\nDigite a opção desejada: ";
         cin >> option;
         switch (option) {
             case 1: createPet(&list);
@@ -438,10 +456,10 @@ int main() {
                 break;
             case 7: searchByTypeBreedAndGender(list);
                 break;
-            case 8: cout << "\nHï¿½ [" << getCount(list) << "] pets cadastrados" << endl;
+            case 8: cout << "\nHá [" << getCount(list) << "] pets cadastrados" << endl;
                 break;
             case 9:
-                cout << "\nHï¿½ [" << getCountType(list) << "] pets cadastrados da especie digitada" << endl;
+                cout << "\nHá [" << getCountType(list) << "] pets cadastrados da especie digitada" << endl;
                 break;
             case 10: printPetRec(list);
                 break;
