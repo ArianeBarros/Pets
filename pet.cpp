@@ -229,16 +229,10 @@ int getCount(pet *list) {
     return count;
 }
 
-int getCountType(pet *list) {
+int getCountType(pet *list, char type[]) {
     if (list == NULL) return 0;
 
-    char type[11];
     int count = 0;
-
-    cout << "Digite a espécie do pet a ser buscado: ";
-    cin >> type;
-    cin.ignore();
-    tolower(*type);
 
     while(list) {
         if(strcmp(list->type, type) == 0) {
@@ -276,33 +270,29 @@ pet* searchByType(pet *list, char type[11]) {
 
 void searchByName(pet *list) {
     char name[21];
+    int count = 0;
 
     cout << "Digite o nome do pet a ser buscado: ";
     cin >> name;
     cin.ignore();
 
-    pet *target = list;
-
-    // Target anda atï¿½ que ele encontre o nome ou seja NULL
-    while(target && strcmp(target->name, name) != 0) target = target->next;
-
-    // Se target ï¿½ NULL, não encontrou o nome
-    if(target == NULL) {
-        cout << "Pet " << name << " não encontrado!" << endl;
-        return;
+    while(list) {
+        if(strcmp(list->name, name) == 0) {
+            cout
+                << "Nome: " << list->name << endl
+                << "Espécie: " << list->type << endl
+                << "Raça: " << list->breed << endl;
+            if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
+            else cout << "Gênero: Macho" << endl;
+            cout    
+                << "Idade: " << list->age << " anos" << endl
+                << "Peso: " << list->weight << " kg" << endl
+                << endl;
+            count++;
+        }
+        list = list->next;
     }
-    else {
-        cout
-            << "Nome: " << list->name << endl
-            << "Espécie: " << list->type << endl
-            << "raça: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
-        else cout << "Gênero: Macho" << endl;
-        cout    
-            << "Idade: " << list->age << " anos" << endl
-            << "Peso: " << list->weight << " kg" << endl
-            << endl;
-    }
+    cout << "Encontrado " << count << " pets com o nome " << name << endl;
 }
 
 
@@ -313,7 +303,6 @@ void searchByType(pet *list) {
     cout << "Digite a espécie do pet a ser buscado: ";
     cin >> type;
     cin.ignore();
-    tolower(*type);
 
     while(list) {
         if(strcmp(list->type, type) == 0) {
@@ -458,8 +447,10 @@ int main() {
                 break;
             case 8: cout << "\nHá [" << getCount(list) << "] pets cadastrados" << endl;
                 break;
-            case 9:
-                cout << "\nHá [" << getCountType(list) << "] pets cadastrados da especie digitada" << endl;
+            case 9: cout << "Digite a espécie do pet a ser buscado: ";
+                cin >> type;
+                cin.ignore();
+                cout << "\nHá [" << getCountType(list, type) << "] pets cadastrados da especie digitada" << endl;
                 break;
             case 10: printPetRec(list);
                 break;
