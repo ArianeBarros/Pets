@@ -96,7 +96,7 @@ void createPet(pet **list) {
         cout << "\n=-=-=-=-=-=- Informações do Pet a ser adicionado -=-=-=-=-=-=\n" << endl;
         cout << "Nome: "; cin >> data.name; //name = input();
         cout << "Espécie: "; cin >> data.type;
-        cout << "raça: "; cin >> data.breed;
+        cout << "Raça: "; cin >> data.breed;
         do {
             cin.ignore();
 			if (cin.fail())
@@ -106,11 +106,26 @@ void createPet(pet **list) {
             cout << "Utilize somente números.\n";
         	}while(cin.fail());
             cout << "Gênero (Fêmea = 1 / Macho = 2): "; cin >> tempGender;
-        } while(tempGender != 1 && tempGender != 2);
+        }while(tempGender != 1 && tempGender != 2);
         data.gender = selectGender(tempGender - 1);
-        cout << "Idade: "; cin >> data.age;
-        cout << "Peso: "; cin >> data.weight;
-
+        do {
+			if (cin.fail())
+        	{
+            cin.clear();
+            cin.ignore(1200, '\n');
+            cout << "Utilize somente números.\n";
+        	}while(cin.fail());
+            cout << "Idade: "; cin >> data.age;
+        }while(cin.fail() || data.age < 0 || data.age > 500);
+        do {
+			if (cin.fail())
+        	{
+            cin.clear();
+            cin.ignore(1200, '\n');
+            cout << "Utilize somente números.\n";
+        	}while(cin.fail());
+            cout << "Peso: "; cin >> data.weight;
+        }while(cin.fail() || data.weight < 0 || data.weight > 500);
         insertEnd(list, data.name, data.type, data.breed, data.gender, data.age, data.weight);
     } catch (const char *err) {
         cout<<"\nErro: " << err << endl;
@@ -133,7 +148,7 @@ void printPetRec(pet *list) {
                 << "Peso: " << list->weight << " kg" << endl
                 << endl;
             printPetRec(list->next);
-        } 
+        }
     }
 }
 
@@ -429,30 +444,56 @@ int main() {
         cout << "10 - Imprimir a lista de pets" << endl;
         cout << "0 - Sair do Programa" << endl;
         cout << "\nDigite a opção desejada: ";
-        cin >> option;
+        do {
+			if (cin.fail())
+	    	{
+	        cin.clear();
+	        cin.ignore(1200, '\n');
+	        cout << "Utilize somente números.\nDigite a opção desejada: ";
+			}
+			else if (option < 0 || option > 10)
+				cout << "Utilize valores entre 0 e 10.\nDigite a opção desejada: ";
+			cin >> option;
+			cin.ignore();
+		}while(cin.fail() || option < 0 || option > 10);
         switch (option) {
-            case 1: createPet(&list);
+            case 1: 
+				createPet(&list);
                 break;
-            case 2: removePet(&list);
+            case 2: 
+				removePet(&list);
                 break;
-            case 3: changePet(&list);
+            case 3: 
+				changePet(&list);
                 break;
-            case 4: searchByName(list);
+            case 4: 
+				searchByName(list);
                 break;
-            case 5: searchByType(list);
+            case 5: 
+				searchByType(list);
                 break;
-            case 6: searchByTypeAndBreed(list);
+            case 6: 
+				searchByTypeAndBreed(list);
                 break;
-            case 7: searchByTypeBreedAndGender(list);
+            case 7: 
+				searchByTypeBreedAndGender(list);
                 break;
-            case 8: cout << "\nHá [" << getCount(list) << "] pets cadastrados" << endl;
+            case 8: 
+				cout << "\nHá [" << getCount(list) << "] pets cadastrados" << endl;
                 break;
-            case 9: cout << "Digite a espécie do pet a ser buscado: ";
+            case 9: 
+				cout << "Digite a espécie do pet a ser buscado: ";
                 cin >> type;
                 cin.ignore();
                 cout << "\nHá [" << getCountType(list, type) << "] pets cadastrados da especie digitada" << endl;
                 break;
-            case 10: printPetRec(list);
+            case 10:
+            	if(list == NULL)
+				{
+	    			cout << "\nA lista está vazia.";
+				}
+				else
+					printPetRec(list);
                 break;
         }
     } while(option != 0);
