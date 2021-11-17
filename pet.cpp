@@ -101,18 +101,21 @@ void createPet(pet **list) {
 
 
 void printPetRec(pet *list) {
-    if(list) {
-        cout
-            << "Nome: " << list->name << endl
-            << "Esp�cie: " << list->type << endl
-            << "Ra�a: " << list->breed << endl;
-        if(list->gender == Female) cout << "G�nero: F�mea" << endl;
-        else cout << "G�nero: Macho" << endl;
-        cout    
-            << "Idade: " << list->age << " anos" << endl
-            << "Peso: " << list->weight << " kg" << endl
-            << endl;
-        printPetRec(list->next);
+    if (getCount(list) != 0)
+    { 
+        if(list) {
+            cout
+                << "Nome: " << list->name << endl
+                << "Esp�cie: " << list->type << endl
+                << "Ra�a: " << list->breed << endl;
+            if(list->gender == Female) cout << "G�nero: F�mea" << endl;
+            else cout << "G�nero: Macho" << endl;
+            cout    
+                << "Idade: " << list->age << " anos" << endl
+                << "Peso: " << list->weight << " kg" << endl
+                << endl;
+            printPetRec(list->next);
+        } 
     }
 }
 
@@ -225,7 +228,7 @@ int getCountType(pet *list) {
         }
         list = list->next;
     }
-    cout << "Encontrado [ " << count << " ] Pets da esp�cie " << type << endl;
+    return count;
 }
 
 /*
@@ -271,10 +274,16 @@ void searchByName(pet *list) {
         return;
     }
     else {
-        pet*aux = list;
-        aux->next = NULL;
-        printPetRec(aux);
-        free(aux);
+        cout
+            << "Nome: " << list->name << endl
+            << "Esp�cie: " << list->type << endl
+            << "Ra�a: " << list->breed << endl;
+        if(list->gender == Female) cout << "G�nero: F�mea" << endl;
+        else cout << "G�nero: Macho" << endl;
+        cout    
+            << "Idade: " << list->age << " anos" << endl
+            << "Peso: " << list->weight << " kg" << endl
+            << endl;
     }
 }
 
@@ -290,7 +299,7 @@ void searchByType(pet *list) {
 
     while(list) {
         if(strcmp(list->type, type) == 0) {
-            /*cout
+            cout
                 << "Nome: " << list->name << endl
                 << "Esp�cie: " << list->type << endl
                 << "Ra�a: " << list->breed << endl;
@@ -299,11 +308,7 @@ void searchByType(pet *list) {
             cout    
                 << "Idade: " << list->age << " anos" << endl
                 << "Peso: " << list->weight << " kg" << endl
-                << endl;*/
-            pet*aux = list;
-            aux->next = NULL;
-            printPetRec(aux);
-            free(aux);
+                << endl;
             count++;
         }
         list = list->next;
@@ -329,10 +334,16 @@ void searchByTypeAndBreed(pet *list) {
 
     while(list) {
         if(strcmp(list->type, type) == 0 && strcmp(list->breed, breed) == 0) {
-            pet*aux = list;
-            aux->next = NULL;
-            printPetRec(aux);
-            free(aux);
+            cout
+            << "Nome: " << list->name << endl
+            << "Esp�cie: " << list->type << endl
+            << "Ra�a: " << list->breed << endl;
+        if(list->gender == Female) cout << "G�nero: F�mea" << endl;
+        else cout << "G�nero: Macho" << endl;
+        cout    
+            << "Idade: " << list->age << " anos" << endl
+            << "Peso: " << list->weight << " kg" << endl
+            << endl;
             count++;
         }
         list = list->next;
@@ -361,10 +372,16 @@ void searchByTypeBreedAndGender(pet *list) {
 
     while(list) {
         if(strcmp(list->type, type) == 0 && strcmp(list->breed, breed) == 0 && list->gender == selectGender(gender - 1)) {
-            pet*aux = list;
-            aux->next = NULL;
-            printPetRec(aux);
-            free(aux);
+            cout
+            << "Nome: " << list->name << endl
+            << "Esp�cie: " << list->type << endl
+            << "Ra�a: " << list->breed << endl;
+        if(list->gender == Female) cout << "G�nero: F�mea" << endl;
+        else cout << "G�nero: Macho" << endl;
+        cout    
+            << "Idade: " << list->age << " anos" << endl
+            << "Peso: " << list->weight << " kg" << endl
+            << endl;
             count++;
         }
         list = list->next;
@@ -424,7 +441,7 @@ int main() {
             case 8: cout << "\nH� [" << getCount(list) << "] pets cadastrados" << endl;
                 break;
             case 9:
-                cout << "\nH� [" << getCountType(list) << "] pets cadastrados da ra�a digitada" << endl;
+                cout << "\nH� [" << getCountType(list) << "] pets cadastrados da especie digitada" << endl;
                 break;
             case 10: printPetRec(list);
                 break;
