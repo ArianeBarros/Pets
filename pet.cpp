@@ -195,7 +195,7 @@ void changePet(pet **list) {
 
 
 int getCount(pet *list) {
-    if (list = NULL) return 0;
+    if (list == NULL) return 0;
 
     int count = 0;
 
@@ -208,23 +208,22 @@ int getCount(pet *list) {
     return count;
 }
 
-
-int getCountType(pet *list, char type[]) {
-    if (list = NULL) return 0;
-
+void getCountType(pet *list) {
     char type[11];
     int count = 0;
 
-    cout << "Digite a espécie do pet a ser buscado: ";
+    cout << "Digite a espécie a ser buscada: ";
     cin >> type;
     cin.ignore();
+    tolower(*type);
 
-    while(list && strcmp(list->type, type) == 0) {
-        count++;
+    while(list) {
+        if(strcmp(list->type, type) == 0) {
+            count++;
+        }
         list = list->next;
     }
-
-    return count;
+    cout << "Encontrado [ " << count << " ] Pets da espécie " << type << endl;
 }
 
 /*
@@ -434,10 +433,7 @@ int main() {
                 break;
             case 8: cout << "\nHá [" << getCount(list) << "] pets cadastrados" << endl;
                 break;
-            case 9: cout << "Digite a espécie do pet a ser buscado: ";
-                cin >> type;
-                cin.ignore();
-                cout << "\nHá [" << getCountType(list, type) << "] pets cadastrados da raça digitada" << endl;
+            case 9: getCountType(list);
                 break;
             case 10: printPetRec(list);
                 break;
