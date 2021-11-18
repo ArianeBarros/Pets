@@ -10,7 +10,7 @@ char linha[20];
 FILE *arq;
 
 if ((arq= fopen("Arquivo.txt", "r+"))==NULL){
-  printf("Arquivo n√£o existente. Criacao do arquivo\n");
+  printf("Arquivo n„o existente. Criacao do arquivo\n");
   arq= fopen ("Arquivo.txt", "w+");
 
   printf("Digite um numero para inserir no arquivo:");

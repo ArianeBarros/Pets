@@ -3,7 +3,7 @@
 #include <locale.h>
 #include <ctime>
 #include <string.h>
-
+#include <windows.h>
 // Coisas a serem mudadas: 
 // Ver o vï¿½deo do Nakamiti para adicionar a leitura de arquivos baseada em struct
 // Mudar os dados linha 61 para uma criaï¿½ão de struct e chamar cada valor fazendo struct.valor
@@ -34,9 +34,9 @@ int getCountType(pet *list);
 void searchByName(pet *list);
 void searchByType(pet *list);
 void searchByTypeAndBreed(pet *list);
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-int getCount(pet *list);
-/*
+/* INSERIR NO INICIO - NAO USAMOS MAIS
 void insertStart(pet **list, char name[], char type[], char breed[], Gender gender, int age, float weight) {
     pet *head = new pet;
     //head = (pet *)malloc(sizeof(pet));
@@ -93,19 +93,32 @@ void createPet(pet **list) {
 
     int tempGender;
     try {
-        cout << "\n=-=-=-=-=-=- Informações do Pet a ser adicionado -=-=-=-=-=-=\n" << endl;
-        cout << "Nome: "; cin >> data.name; //name = input();
-        cout << "Espécie: "; cin >> data.type;
-        cout << "Raça: "; cin >> data.breed;
+        SetConsoleTextAttribute(hConsole, 9); cout << "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="<< endl;
+        SetConsoleTextAttribute(hConsole, 11); cout << "    Informações do"; 
+        SetConsoleTextAttribute(hConsole, 10); cout << " Pet"; 
+        SetConsoleTextAttribute(hConsole, 11); cout << " a ser adicionado" << endl;
+        SetConsoleTextAttribute(hConsole, 9); cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="<< endl << endl;
+        SetConsoleTextAttribute(hConsole, 14); cout << "Nome"; 
+        SetConsoleTextAttribute(hConsole, 15); cout << ": "; cin >> data.name; //name = input();
+        SetConsoleTextAttribute(hConsole, 14); cout << "Espécie";
+        SetConsoleTextAttribute(hConsole, 15); cout << ": "; cin >> data.type;
+        SetConsoleTextAttribute(hConsole, 14); cout << "Raça"; 
+        SetConsoleTextAttribute(hConsole, 15); cout << ": "; cin >> data.breed;
         do {
             cin.ignore();
 			if (cin.fail())
         	{
             cin.clear();
             cin.ignore(1200, '\n');
-            cout << "Utilize somente números.\n";
+            SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente números.\n";
         	}while(cin.fail());
-            cout << "Gênero (Fêmea = 1 / Macho = 2): "; cin >> tempGender;
+            SetConsoleTextAttribute(hConsole, 14); cout << "Gênero ";
+            SetConsoleTextAttribute(hConsole, 15); cout << "(";
+            SetConsoleTextAttribute(hConsole, 13); cout << "Fêmea = 1";
+            SetConsoleTextAttribute(hConsole, 15); cout << "/";
+            SetConsoleTextAttribute(hConsole, 11); cout << "Macho = 2";
+            SetConsoleTextAttribute(hConsole, 15); cout << "): "; 
+            SetConsoleTextAttribute(hConsole, 15); cin >> tempGender;
         }while(tempGender != 1 && tempGender != 2);
         data.gender = selectGender(tempGender - 1);
         do {
@@ -113,22 +126,24 @@ void createPet(pet **list) {
         	{
             cin.clear();
             cin.ignore(1200, '\n');
-            cout << "Utilize somente números.\n";
+            SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente números.\n";
         	}while(cin.fail());
-            cout << "Idade: "; cin >> data.age;
+            SetConsoleTextAttribute(hConsole, 14); cout << "Idade";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": "; cin >> data.age;
         }while(cin.fail() || data.age < 0 || data.age > 500);
         do {
 			if (cin.fail())
         	{
             cin.clear();
             cin.ignore(1200, '\n');
-            cout << "Utilize somente números.\n";
+            SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente números.\n";
         	}while(cin.fail());
-            cout << "Peso: "; cin >> data.weight;
+            SetConsoleTextAttribute(hConsole, 14); cout << "Peso";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": "; cin >> data.weight;
         }while(cin.fail() || data.weight < 0 || data.weight > 500);
         insertEnd(list, data.name, data.type, data.breed, data.gender, data.age, data.weight);
     } catch (const char *err) {
-        cout<<"\nErro: " << err << endl;
+        SetConsoleTextAttribute(hConsole, 12); cout<<"\nErro: " << err << endl;
     }
 }
 
@@ -137,16 +152,27 @@ void printPetRec(pet *list) {
     if (getCount(list) != 0)
     { 
         if(list) {
-            cout
-                << "Nome: " << list->name << endl
-                << "Espécie: " << list->type << endl
-                << "Raça: " << list->breed << endl;
-            if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
-            else cout << "Gênero: Macho" << endl;
-            cout    
-                << "Idade: " << list->age << " anos" << endl
-                << "Peso: " << list->weight << " kg" << endl
-                << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Nome";
+            SetConsoleTextAttribute(hConsole, 15); cout << ":" << list->name << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Espécie";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->type << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Raça";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->breed << endl;
+            if(list->gender == Female)
+            {
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero";
+                SetConsoleTextAttribute(hConsole, 15); cout << ": ";
+                SetConsoleTextAttribute(hConsole, 13); cout <<"? Fêmea"<< endl;
+            }
+            else
+            { 
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero: ";
+                SetConsoleTextAttribute(hConsole, 11); cout <<"? Macho" << endl;
+            }
+            SetConsoleTextAttribute(hConsole, 10); cout << "Idade";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->age << " anos" << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Peso";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->weight << "kg" << endl << endl;
             printPetRec(list->next);
         }
     }
@@ -156,8 +182,9 @@ void printPetRec(pet *list) {
 void removePet (pet **list) {
     char name[21];
 
-    cout << "Digite o nome do pet a ser removido: ";
-    cin >> name;
+    SetConsoleTextAttribute(hConsole, 15); cout << "Digite o nome do pet a ser";
+    SetConsoleTextAttribute(hConsole, 12); cout <<" removido";
+    SetConsoleTextAttribute(hConsole, 15); cout << ": "; cin >> name;
     cin.ignore();
 
     pet *target = *list;
@@ -167,11 +194,11 @@ void removePet (pet **list) {
 
     // Se target ï¿½ NULL, não encontrou o nome
     if(target == NULL) {
-        cout << "Pet " << name << " não encontrado!" << endl;
+        SetConsoleTextAttribute(hConsole, 12); cout << "Pet " << name << " não encontrado!" << endl;
         return;
     }
     else {
-        cout << "Pet " << name << " removido com sucesso!" << endl;
+        SetConsoleTextAttribute(hConsole, 10); cout << "Pet " << name << " removido com sucesso!" << endl;
         // Se target ï¿½ o primeiro da lista 
         if(target == *list) {
             *list = target->next;
@@ -190,8 +217,9 @@ void removePet (pet **list) {
 void changePet(pet **list) {
     char name[21];
 
-    cout << "Digite o nome do pet a ser alterado: ";
-    cin >> name;
+    SetConsoleTextAttribute(hConsole, 15); cout << "Digite o nome do pet a ser ";
+    SetConsoleTextAttribute(hConsole, 13); cout << "alterado";
+    SetConsoleTextAttribute(hConsole, 15); cout << ": "; cin >> name;
     cin.ignore();
 
     pet *target = *list;
@@ -201,7 +229,9 @@ void changePet(pet **list) {
 
     // Se target ï¿½ NULL, não encontrou o nome
     if(target == NULL) {
-        cout << "Pet " << name << " não encontrado!" << endl;
+        SetConsoleTextAttribute(hConsole, 12); cout << "Pet "; 
+        SetConsoleTextAttribute(hConsole, 15); cout << name;
+        SetConsoleTextAttribute(hConsole, 12); cout << " não encontrado!" << endl;
         return;
     }
     else {
@@ -209,21 +239,54 @@ void changePet(pet **list) {
 
         int tempGender;
         try {
-            cout << "\n=-=-=-=-=-=- Informações do Pet a ser adicionado -=-=-=-=-=-=\n" << endl;
-            cout << "Novo nome: "; cin >> target->name;
-            cout << "Nova espécie: "; cin >> target->type;
-            cout << "Nova raça: "; cin >> target->breed;
-            do {
-                cin.ignore();
-                cout << "Novo gênero (Fêmea = 1 / Macho = 2): "; cin >> tempGender;
-            } while(tempGender != 1 && tempGender != 2);
-            target->gender = selectGender(tempGender - 1);
-            cout << "Nova idade: "; cin >> target->age;
-            cout << "Novo peso: "; cin >> target->weight;
-
+            SetConsoleTextAttribute(hConsole, 1); cout << "\n=-=-=-=-=-=- ";
+            SetConsoleTextAttribute(hConsole, 11); cout << "Informações do Pet a ser adicionado";
+            SetConsoleTextAttribute(hConsole, 1); cout << " -=-=-=-=-=-=\n" << endl;
+            SetConsoleTextAttribute(hConsole, 14); cout << "Novo Nome"; 
+            SetConsoleTextAttribute(hConsole, 15); cout << ": ";cin >> target->name;
+            SetConsoleTextAttribute(hConsole, 14); cout << "Nova Espécie"; +
             
+            SetConsoleTextAttribute(hConsole, 15); cout << ": "; cin >> target->type;
+            SetConsoleTextAttribute(hConsole, 14); cout << "Nova Raça "; 
+            SetConsoleTextAttribute(hConsole, 15); cout<< ": "; cin >> target->breed;
+            do{
+                cin.ignore();
+                if (cin.fail())
+                {
+                    cin.clear();
+                    cin.ignore(1200, '\n');
+                    SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente números.\n";
+                }while(cin.fail());
+                SetConsoleTextAttribute(hConsole, 15); cout << "Novo Gênero ";
+                SetConsoleTextAttribute(hConsole, 15); cout <<"(";
+                SetConsoleTextAttribute(hConsole, 13); cout <<"Fêmea = 1"; 
+                SetConsoleTextAttribute(hConsole, 15); cout <<"/"; 
+                SetConsoleTextAttribute(hConsole, 11); cout << "Macho = 2";
+                SetConsoleTextAttribute(hConsole, 15); cout <<"): "; cin >> tempGender;
+                }while(tempGender != 1 && tempGender != 2);
+            target->gender = selectGender(tempGender - 1);
+            do{
+			    if (cin.fail())
+                {
+                    cin.clear();
+                    cin.ignore(1200, '\n');
+                    SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente números.\n";
+                }while(cin.fail());
+                SetConsoleTextAttribute(hConsole, 14); cout << "Nova Idade: "; 
+                SetConsoleTextAttribute(hConsole, 15); cin >> target->age;
+                }while(cin.fail() || target->age < 0 || target->age > 500);
+            do{
+			    if (cin.fail())
+                {
+                    cin.clear();
+                    cin.ignore(1200, '\n');
+                    SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente números.\n";
+                }while(cin.fail());
+                SetConsoleTextAttribute(hConsole, 14); cout << "Novo Peso: "; 
+                SetConsoleTextAttribute(hConsole, 15); cin >> target->weight;
+            }while(cin.fail() || target->weight < 0 || target->weight > 500);
         } catch (const char *err) {
-            cout<<"\nErro: " << err << endl;
+            SetConsoleTextAttribute(hConsole, 12); cout<<"\nErro: " << err << endl;
         }
     }
 
@@ -287,27 +350,51 @@ void searchByName(pet *list) {
     char name[21];
     int count = 0;
 
-    cout << "Digite o nome do pet a ser buscado: ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "Digite o ";
+    SetConsoleTextAttribute(hConsole, 13); cout << "nome " ; 
+    SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscado: ";
     cin >> name;
     cin.ignore();
 
     while(list) {
         if(strcmp(list->name, name) == 0) {
-            cout
-                << "Nome: " << list->name << endl
-                << "Espécie: " << list->type << endl
-                << "Raça: " << list->breed << endl;
-            if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
-            else cout << "Gênero: Macho" << endl;
-            cout    
-                << "Idade: " << list->age << " anos" << endl
-                << "Peso: " << list->weight << " kg" << endl
-                << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Nome";
+            SetConsoleTextAttribute(hConsole, 15); cout << ":" << list->name << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Espécie";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->type << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Raça";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->breed << endl;
+            if(list->gender == Female)
+            {
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero";
+                SetConsoleTextAttribute(hConsole, 15); cout << ": ";
+                SetConsoleTextAttribute(hConsole, 13); cout <<"? Fêmea"<< endl;
+            }
+            else
+            { 
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero: ";
+                SetConsoleTextAttribute(hConsole, 11); cout <<"? Macho" << endl;
+            }
+            SetConsoleTextAttribute(hConsole, 10); cout << "Idade";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->age << " anos" << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Peso";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->weight << "kg" << endl << endl;
             count++;
         }
         list = list->next;
     }
-    cout << "Encontrado " << count << " pets com o nome " << name << endl;
+    if (count == 0){
+        SetConsoleTextAttribute(hConsole, 15); cout << "Não foi encontrado nenhum pet chamado "; 
+        cout << name << endl;
+        return;
+        }
+    SetConsoleTextAttribute(hConsole, 15); cout << "Encontrado "; 
+    SetConsoleTextAttribute(hConsole, 10); cout << count;
+    if (count > 1){
+        SetConsoleTextAttribute(hConsole, 15); cout << " pets chamados ";}
+    else if (count == 1){
+        SetConsoleTextAttribute(hConsole, 15); cout << " pet chamado ";}
+    SetConsoleTextAttribute(hConsole, 15); cout<< name << endl;
 }
 
 
@@ -315,27 +402,42 @@ void searchByType(pet *list) {
     char type[11];
     int count = 0;
 
-    cout << "Digite a espécie do pet a ser buscado: ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "Digite a ";
+    SetConsoleTextAttribute(hConsole, 13); cout << "espécie ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscada: ";
     cin >> type;
     cin.ignore();
 
     while(list) {
         if(strcmp(list->type, type) == 0) {
-            cout
-                << "Nome: " << list->name << endl
-                << "Espécie: " << list->type << endl
-                << "Raça: " << list->breed << endl;
-            if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
-            else cout << "Gênero: Macho" << endl;
-            cout    
-                << "Idade: " << list->age << " anos" << endl
-                << "Peso: " << list->weight << " kg" << endl
-                << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Nome";
+            SetConsoleTextAttribute(hConsole, 15); cout << ":" << list->name << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Espécie";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->type << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Raça";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->breed << endl;
+            if(list->gender == Female)
+            {
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero";
+                SetConsoleTextAttribute(hConsole, 15); cout << ": ";
+                SetConsoleTextAttribute(hConsole, 13); cout <<"? Fêmea"<< endl;
+            }
+            else
+            { 
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero: ";
+                SetConsoleTextAttribute(hConsole, 11); cout <<"? Macho" << endl;
+            }
+            SetConsoleTextAttribute(hConsole, 10); cout << "Idade";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->age << " anos" << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Peso";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->weight << "kg" << endl << endl;
             count++;
         }
         list = list->next;
     }
-    cout << "Encontrado " << count << " pets com a espécie " << type << endl;
+    SetConsoleTextAttribute(hConsole, 15); cout << "Encontrado "; 
+    SetConsoleTextAttribute(hConsole, 10); cout << count << " "; 
+    SetConsoleTextAttribute(hConsole, 15); cout << type << endl;
 }
 
 
@@ -344,33 +446,51 @@ void searchByTypeAndBreed(pet *list) {
     char breed[21];
     int count = 0;
 
-    cout << "Digite a espécie do pet a ser buscado: ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "Digite a ";
+    SetConsoleTextAttribute(hConsole, 13); cout << "espécie ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscada: ";
     cin >> type;
     cin.ignore();
     tolower(*type);
 
-    cout << "Digite a raça do pet a ser buscado: ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "Digite a ";
+    SetConsoleTextAttribute(hConsole, 13); cout << "raça ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscada: ";
     cin >> breed;
     cin.ignore();
     tolower(*breed);
 
     while(list) {
         if(strcmp(list->type, type) == 0 && strcmp(list->breed, breed) == 0) {
-            cout
-            << "Nome: " << list->name << endl
-            << "Espécie: " << list->type << endl
-            << "Raça: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
-        else cout << "Gênero: Macho" << endl;
-        cout    
-            << "Idade: " << list->age << " anos" << endl
-            << "Peso: " << list->weight << " kg" << endl
-            << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Nome";
+            SetConsoleTextAttribute(hConsole, 15); cout << ":" << list->name << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Espécie";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->type << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Raça";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->breed << endl;
+            if(list->gender == Female)
+            {
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero";
+                SetConsoleTextAttribute(hConsole, 15); cout << ": ";
+                SetConsoleTextAttribute(hConsole, 13); cout <<"? Fêmea"<< endl;
+            }
+            else
+            { 
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero: ";
+                SetConsoleTextAttribute(hConsole, 11); cout <<"? Macho" << endl;
+            }
+            SetConsoleTextAttribute(hConsole, 10); cout << "Idade";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->age << " anos" << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Peso";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->weight << "kg" << endl << endl;
             count++;
         }
         list = list->next;
     }
-    cout << "Encontrado " << count << " pets da espécie " << type << " e raça " << breed << endl;
+    SetConsoleTextAttribute(hConsole, 15); cout << "Encontrado "; 
+    SetConsoleTextAttribute(hConsole, 10); cout << count << " "; 
+    SetConsoleTextAttribute(hConsole, 15); cout << type << " ";
+    SetConsoleTextAttribute(hConsole, 15); cout<< breed;
 }
 
 void searchByTypeBreedAndGender(pet *list) {
@@ -379,83 +499,127 @@ void searchByTypeBreedAndGender(pet *list) {
     int gender;
     int count = 0;
 
-    cout << "Digite a espécie do pet a ser buscado: ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "Digite a ";
+    SetConsoleTextAttribute(hConsole, 13); cout << "espécie ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscada: ";
     cin >> type;
     cin.ignore();
 
-    cout << "Digite a raça do pet a ser buscado: ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "Digite a ";
+    SetConsoleTextAttribute(hConsole, 13); cout << "raça ";
+    SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscada: ";
     cin >> breed;
     cin.ignore();
 
     do {
-        cout << "Gênero (Fêmea = 1 / Macho = 2): ";
+        SetConsoleTextAttribute(hConsole, 14); cout << "Gênero ";
+        SetConsoleTextAttribute(hConsole, 15); cout << "(";
+        SetConsoleTextAttribute(hConsole, 13); cout << "Fêmea = 1";
+        SetConsoleTextAttribute(hConsole, 15); cout << "/";
+        SetConsoleTextAttribute(hConsole, 11); cout << "Macho = 2";
+        SetConsoleTextAttribute(hConsole, 15); cout << "): "; 
         cin >> gender;
     } while(gender != 1 && gender != 2);
 
     while(list) {
         if(strcmp(list->type, type) == 0 && strcmp(list->breed, breed) == 0 && list->gender == selectGender(gender - 1)) {
-            cout
-            << "Nome: " << list->name << endl
-            << "Espécie: " << list->type << endl
-            << "Raça: " << list->breed << endl;
-        if(list->gender == Female) cout << "Gênero: Fêmea" << endl;
-        else cout << "Gênero: Macho" << endl;
-        cout    
-            << "Idade: " << list->age << " anos" << endl
-            << "Peso: " << list->weight << " kg" << endl
-            << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Nome";
+            SetConsoleTextAttribute(hConsole, 15); cout << ":" << list->name << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Espécie";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->type << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Raça";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->breed << endl;
+            if(list->gender == Female)
+            {
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero";
+                SetConsoleTextAttribute(hConsole, 15); cout << ": ";
+                SetConsoleTextAttribute(hConsole, 13); cout <<"? Fêmea"<< endl;
+            }
+            else
+            { 
+                SetConsoleTextAttribute(hConsole, 10); cout << "Gênero: ";
+                SetConsoleTextAttribute(hConsole, 11); cout <<"? Macho" << endl;
+            }
+            SetConsoleTextAttribute(hConsole, 10); cout << "Idade";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->age << " anos" << endl;
+            SetConsoleTextAttribute(hConsole, 10); cout << "Peso";
+            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->weight << "kg" << endl << endl;
             count++;
         }
         list = list->next;
     }
-    cout << "Encontrado " << count << " pets ";
-    if(selectGender(gender - 1) == Female) cout << "fêmea";
-    else cout << "macho";
-    cout << " da espécie " << type << " e raça " << breed << endl;
+    SetConsoleTextAttribute(hConsole, 15); cout << "Encontrado "; 
+    SetConsoleTextAttribute(hConsole, 10); cout << count << " "; 
+    SetConsoleTextAttribute(hConsole, 15); cout << type << " ";
+    SetConsoleTextAttribute(hConsole, 15); cout<< breed << " ";
+    if(selectGender(gender - 1) == Female) {
+		SetConsoleTextAttribute(hConsole, 13); cout << "fêmea"<<endl;}
+    else {
+		SetConsoleTextAttribute(hConsole, 11); cout << "macho"<<endl;}
 }
 
 
 int main() {
-    setlocale(LC_ALL, "Portuguese");
-
+    //setlocale(LC_ALL, "Portuguese");  //MOSTRAR ACENTOS NO GERAL
+    //SetConsoleOutputCP(65001);  //MOSTRAR ACENTOS NO VSCODE
+    //TEM ALGUM BUG COM ISSO AQUI ^^^
+    
     /*FILE *petData;
     if((petData = fopen("pet_data.txt", "r+")) == NULL) {
         cout << "Arquivo não existente, criando um novo" << endl;
         petData = fopen("pet_data.txt", "w+");
     }*/
-
+    SetConsoleTitle("Pets"); // MUDA O TITULO DA JANELA DO CMD//
     int option;
     char type[11];
     pet *list = NULL;
 
-
-    cout << "Bem-vindo à lista de Pets!\n";
     do {
-        cout << "\n\nMenu de Opções" << endl;
-        cout << "1 - Inserir na lista de pets" << endl;
-        cout << "2 - Remover na lista de pets" << endl;
-        cout << "3 - Alterar informação de um pet" << endl;
-        cout << "4 - Buscar um pet por nome" << endl;
-        cout << "5 - Filtrar a lista de pets por espécie" << endl;
-        cout << "6 - Filtrar a lista de pets por espécie e raça" << endl;
-        cout << "7 - Filtrar a lista de pets por espécie, raça e sexo" << endl;
-        cout << "8 - Quantidade de pets na lista" << endl;
-        cout << "9 - Quantidade de pets de uma espécie" << endl;
-        cout << "10 - Imprimir a lista de pets" << endl;
-        cout << "0 - Sair do Programa" << endl;
-        cout << "\nDigite a opção desejada: ";
-        do {
-			if (cin.fail())
-	    	{
-	        cin.clear();
-	        cin.ignore(1200, '\n');
-	        cout << "Utilize somente números.\nDigite a opção desejada: ";
-			}
-			else if (option < 0 || option > 10)
-				cout << "Utilize valores entre 0 e 10.\nDigite a opção desejada: ";
-			cin >> option;
-			cin.ignore();
-		}while(cin.fail() || option < 0 || option > 10);
+        do{
+            SetConsoleTextAttribute(hConsole, 14); cout << "=-=-=-=-=-=-=-=--=-=-=-=-=-=";
+            SetConsoleTextAttribute(hConsole, 10); cout << " Projeto PETS";
+            SetConsoleTextAttribute(hConsole, 14); cout << " =-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n";
+            SetConsoleTextAttribute(hConsole, 15); cout << "\t\t      Bem-vindo à lista de ";
+            SetConsoleTextAttribute(hConsole, 11); cout << "Pets";
+            SetConsoleTextAttribute(hConsole, 15); cout << "!\n";
+            SetConsoleTextAttribute(hConsole, 15); cout << "\t\t   Escolha uma opção para continuar\n\n";
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t1 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Inserir na lista de pets" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t2 -"; 
+            SetConsoleTextAttribute(hConsole, 15); cout << " Remover na lista de pets" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t3 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Alterar informação de um pet" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t4 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Buscar um pet por nome" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t5 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Filtrar a lista de pets por espécie" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t6 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Filtrar a lista de pets por espécie e raça" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t7 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Filtrar a lista de pets por espécie, raça e sexo" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t8 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Quantidade de pets na lista" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t9 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Quantidade de pets de uma espécie" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t10 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Imprimir a lista de pets" << endl;
+            SetConsoleTextAttribute(hConsole, 2); cout << "\t\t0 -";
+            SetConsoleTextAttribute(hConsole, 15); cout << " Sair do Programa" << endl;
+            SetConsoleTextAttribute(hConsole, 14); cout << "=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=";
+            SetConsoleTextAttribute(hConsole, 15); cout << "\nDigite a opção desejada: ";
+            SetConsoleTextAttribute(hConsole, 2); cin >> option;
+            cin.ignore(10000, '\n');
+            if (cin.fail())
+            {
+                //system("cls");
+                SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente números!\n";
+                cin.clear();
+                cin.ignore(10000, '\n');
+            }
+            else if (option < 1 || option > 10){
+                //system("cls");
+				SetConsoleTextAttribute(hConsole, 12); cout << "Utilize valores entre 0 e 10\n";}
+        }while (option != 1 && option != 2 && option != 3 && option != 4 && option != 5 && option != 6 && option != 7 && option != 8 && option != 9 && option != 10);
         switch (option) {
             case 1: 
 				createPet(&list);
@@ -479,24 +643,31 @@ int main() {
 				searchByTypeBreedAndGender(list);
                 break;
             case 8: 
-				cout << "\nHá [" << getCount(list) << "] pets cadastrados" << endl;
+				SetConsoleTextAttribute(hConsole, 15); cout << "\nHá ["; 
+                SetConsoleTextAttribute(hConsole, 10); cout << getCount(list); 
+                SetConsoleTextAttribute(hConsole, 15); cout << "] pets cadastrados" << endl;
                 break;
             case 9: 
-				cout << "Digite a espécie do pet a ser buscado: ";
+                SetConsoleTextAttribute(hConsole, 15); cout << "Digite a ";
+                SetConsoleTextAttribute(hConsole, 13); cout << "espécie ";
+                SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscada: ";
                 cin >> type;
                 cin.ignore();
-                cout << "\nHá [" << getCountType(list, type) << "] pets cadastrados da especie digitada" << endl;
+				SetConsoleTextAttribute(hConsole, 15); cout << "\nHá ["; 
+                SetConsoleTextAttribute(hConsole, 10); cout << getCount(list); 
+                SetConsoleTextAttribute(hConsole, 15); cout << "] pets cadastrados da espécie digitada" << endl;
                 break;
             case 10:
             	if(list == NULL)
 				{
-	    			cout << "\nA lista está vazia.";
+                    SetConsoleTextAttribute(hConsole, 15); cout << "\nA lista está ";
+                    SetConsoleTextAttribute(hConsole, 12); cout << "vazia.";
 				}
 				else
 					printPetRec(list);
                 break;
         }
-    } while(option != 0);
+    }while(option != 0);
 
     //fclose(petData);
 
