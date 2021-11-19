@@ -617,7 +617,7 @@ int main() {
         cout << "Arquivo n�o existente, criando um novo" << endl;
         petData = fopen("pet_data.txt", "w+");
     }*/
-    //SetConsoleTitle("Pets"); // MUDA O TITULO DA JANELA DO CMD//
+    SetConsoleTitle("Pets"); // MUDA O TITULO DA JANELA DO CMD//
     int option;
     char type[11];
     pet *list = NULL;
