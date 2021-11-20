@@ -233,7 +233,9 @@ void removePet (pet **list) {
         int seekedCode;
         if (count > 1) 
         {
-            cout<<"Digite o c�digo do pet a ser removido: "; cin >> seekedCode;
+            cout<<"Codigos de pets chamados ["<<name<<"] disponiveis para remocao: | ";
+            while(listPetsWithName) { cout<<listPetsWithName->code<<" | ";  listPetsWithName = listPetsWithName->next;}
+            cout<<"\nDigite o c�digo do pet a ser removido: "; cin >> seekedCode;
             target = searchByCode(*list, seekedCode);
         }
         if(target == NULL) {
@@ -334,7 +336,9 @@ void changePet(pet **list) {
         try {
             int seekedCode;
             if (count > 1) {
-                cout<<"Digite o c�digo do pet a ser alterado: "; cin >> seekedCode;
+                cout<<"Codigos de pets chamados ["<<name<<"] disponiveis para remocao: | ";
+                while(listPetsWithName) { cout<<listPetsWithName->code<<" | ";  listPetsWithName = listPetsWithName->next;}
+                cout<<"\nDigite o c�digo do pet a ser alterado: "; cin >> seekedCode;
                 target = searchByCode(*list, seekedCode);
             }
             if(target == NULL) {
