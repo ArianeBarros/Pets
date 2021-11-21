@@ -5,9 +5,7 @@
 #include <string.h>
 #include <windows.h>
 #include <fstream>
-// Coisas a serem mudadas: 
-// Ver o vÔøΩdeo do Nakamiti para adicionar a leitura de arquivos baseada em struct
-// Mudar os dados linha 61 para uma criaÔøΩÔøΩo de struct e chamar cada valor fazendo struct.valor
+
 
 
 
@@ -26,7 +24,7 @@ struct pet {
     struct pet* next;
 };
 
-//INICIALIZANDO AS FUNÔøΩÔøΩES
+//INICIALIZANDO AS FUN«’ES
 void insertEnd(pet **list, int code, char name[], char type[], char breed[], Gender gender, int age, float weight);
 void createPet(pet **list);
 void printPetRec(pet *list);
@@ -43,31 +41,10 @@ void restoreBackup(pet **list, ifstream &infile);
 int findHighestCode(pet* list);
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-/* INSERIR NO INICIO - NAO USAMOS MAIS
-void insertStart(pet **list, char name[], char type[], char breed[], Gender gender, int age, float weight) {
-    pet *head = new pet;
-    //head = (pet *)malloc(sizeof(pet));
-    try {
-        strcpy(head->name, name);
-        strcpy(head->type, type);
-        strcpy(head->breed, breed);
-        head->gender = gender;
-        head->age = age;
-        head->weight = weight;
-        head->next = (* list);
-        (*list) = head;
-    } catch (const char * err) {
-        cout<<"\nErro: " << err << "\n";
-        throw;
-    }
-    
-}
-*/
 
 
 void insertEnd(pet **list, int code, char name[], char type[], char breed[], Gender gender, int age, float weight) {
     pet *head = new pet;
-    //head = (pet *)malloc(sizeof(pet));
     try {
         head->code = code;
         strcpy(head->name, name);
@@ -106,7 +83,6 @@ int findHighestCode (pet* list) {
 
     nextCode++;
 
-    //cout<<"\nO prox codigo deve ser "<<nextCode<<endl;
 
     return nextCode;
 }
@@ -232,15 +208,22 @@ void removePet (pet **list) {
         int seekedCode;
         if (count > 1) 
         {
-            cout<<"Codigos de pets chamados ["<<name<<"] disponiveis para remocao: ";
-            while(listPetsWithName) { cout<<listPetsWithName->code<<" | ";  listPetsWithName = listPetsWithName->next;}
-            cout<<"\nDigite o cÛdigo do pet a ser removido: "; cin >> seekedCode;
+        	SetConsoleTextAttribute(hConsole, 15); cout<<"CÛdigos de pets chamados [";
+			SetConsoleTextAttribute(hConsole, 13);cout<<name;
+			SetConsoleTextAttribute(hConsole, 15);cout<< "] disponÌveis para remoÁ„o: | ";
+            while(listPetsWithName) { 
+			SetConsoleTextAttribute(hConsole, 10); cout<<listPetsWithName->code;
+			SetConsoleTextAttribute(hConsole, 15);cout<<" | ";  
+			listPetsWithName = listPetsWithName->next;}
+            SetConsoleTextAttribute(hConsole, 15); cout<<"\nDigite o cÛdigo do pet a ser removido: "; cin >> seekedCode;
             target = searchByCode(*list, seekedCode);
         }
         if(target == NULL) {
             SetConsoleTextAttribute(hConsole, 12); cout << "Pet ["; 
             SetConsoleTextAttribute(hConsole, 15); cout << name;
-            SetConsoleTextAttribute(hConsole, 12); cout << "] e codigo ["<<seekedCode<<"] n„o encontrado!" << endl;
+            SetConsoleTextAttribute(hConsole, 12); cout << "] e cÛdigo [";
+			SetConsoleTextAttribute(hConsole, 15); cout<<seekedCode;
+			SetConsoleTextAttribute(hConsole, 12); cout<<"] n„o encontrado!" << endl;
             //return;
         } else {         
 
@@ -298,7 +281,7 @@ pet* searchByCode (pet*list, int code) {
 
     if (count > 1) {
         SetConsoleTextAttribute(hConsole, 15); cout << "Erro! Foram encontrados mais de 1 ("; 
-        SetConsoleTextAttribute(hConsole, 10); cout << count << ") pets cadastrados com o cÛdigo ["; 
+        SetConsoleTextAttribute(hConsole, 10); cout << count << ") pets cadastrados com o codigo ["; 
         SetConsoleTextAttribute(hConsole, 15); cout << code << "]" << endl;
 
         return NULL;
@@ -317,36 +300,41 @@ void changePet(pet **list) {
 
     pet *target = *list;
 
-    // Target anda atÔøΩ que ele encontre o nome ou seja NULL
     while(target && strcmp(target->name, name) != 0) target = target->next;
 
     pet* listPetsWithName = searchByName(*list, name);
     int count = getCount(listPetsWithName);
 
-    // Se target ÔøΩ NULL, n„o encontrou o nome
     if(count == 0) {
         SetConsoleTextAttribute(hConsole, 12); cout << "Pet ["; 
         SetConsoleTextAttribute(hConsole, 15); cout << name;
         SetConsoleTextAttribute(hConsole, 12); cout << "] n„o encontrado!" << endl;
-        //return;
     }
     else {
         int tempGender;
         try {
             int seekedCode;
             if (count > 1) {
-                cout<<"Codigos de pets chamados ["<<name<<"] disponiveis para remocao: | ";
-                while(listPetsWithName) { cout<<listPetsWithName->code<<" | ";  listPetsWithName = listPetsWithName->next;}
+                SetConsoleTextAttribute(hConsole, 15); cout<<"CÛdigos de pets chamados [";
+				SetConsoleTextAttribute(hConsole, 13);cout<<name;
+				SetConsoleTextAttribute(hConsole, 15);cout<< "] disponÌveis para remoÁ„o: | ";
+                while(listPetsWithName) { 
+				SetConsoleTextAttribute(hConsole, 10); cout<<listPetsWithName->code;
+				SetConsoleTextAttribute(hConsole, 15);cout<<" | ";  
+				listPetsWithName = listPetsWithName->next;}
                 cout<<"\nDigite o cÛdigo do pet a ser alterado: "; cin >> seekedCode;
                 target = searchByCode(*list, seekedCode);
             }
             if(target == NULL) {
                 SetConsoleTextAttribute(hConsole, 12); cout << "Pet ["; 
                 SetConsoleTextAttribute(hConsole, 15); cout << name;
-                SetConsoleTextAttribute(hConsole, 12); cout << "] e codigo ["<<seekedCode<<"] n„o encontrado!" << endl;
-                //return;
+                SetConsoleTextAttribute(hConsole, 12); cout << "] e cÛdigo ["<<seekedCode<<"] n„o encontrado!" << endl;
             } else {
-                cout<<"\nO pet retornado tem nome ["<<target->name<<"] e codigo ["<<target->code<<"]"<<endl;
+                SetConsoleTextAttribute(hConsole, 15);cout <<"\nO pet retornado tem nome [";
+				SetConsoleTextAttribute(hConsole, 13);cout <<target->name;
+				SetConsoleTextAttribute(hConsole, 15);cout <<"] e cÛdigo [";
+				SetConsoleTextAttribute(hConsole, 10); cout<<target->code;
+				SetConsoleTextAttribute(hConsole, 15); cout<<"]"<<endl;
                 SetConsoleTextAttribute(hConsole, 1); cout << "\n=-=-=-=-=-=- ";
                 SetConsoleTextAttribute(hConsole, 11); cout << "InformaÁıes do Pet a ser alterado";
                 SetConsoleTextAttribute(hConsole, 1); cout << " -=-=-=-=-=-=\n" << endl;
@@ -365,7 +353,7 @@ void changePet(pet **list) {
                         cin.ignore(1200, '\n');
                         SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente n˙meros.\n";
                     }while(cin.fail());
-                    SetConsoleTextAttribute(hConsole, 15); cout << "Novo Sexo ";
+                    SetConsoleTextAttribute(hConsole, 14); cout << "Novo Sexo ";
                     SetConsoleTextAttribute(hConsole, 15); cout <<"(";
                     SetConsoleTextAttribute(hConsole, 13); cout <<"FÍmea = 1"; 
                     SetConsoleTextAttribute(hConsole, 15); cout <<"/"; 
@@ -429,66 +417,14 @@ int getCountType(pet *list, char type[]) {
     return count;
 }
 
-/*
-pet* searchByType(pet *list, char type[11]) {
-    pet* found = NULL;
-
-    if (!list) { cout << "\nNenhum pet cadastrado!"; return NULL; }
-    
-    while (list) {
-        if (strcmp(list->type, type) == 0) {
-            pet* aux = list;
-            aux->next = found;
-            found = aux;
-        }
-        list = list->next;
-    }
-    
-    if ( found ) {
-        cout << "\n[" << getCount( found ) << "] pets da espÈcie [" << type << "] foram encontrados\n";
-        printPetRec (found);
-    }
-    else { cout << "\nNenhum pet da espÈcie [" << type << "] foi cadastrado."; return NULL;}
-    
-    return found;
-}
-*/
 
 pet* searchByName(pet *list, char name[]) {
-    //char name[21];
     int count = 0;
-    /*
-    SetConsoleTextAttribute(hConsole, 15); cout << "Digite o ";
-    SetConsoleTextAttribute(hConsole, 13); cout << "nome " ; 
-    SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscado: ";
-    cin >> name;
-    cin.ignore();*/
+
     pet* foundByName = NULL;
     while(list) {
         if(strcmp(list->name, name) == 0) {
             insertEnd(&foundByName, list->code, list->name, list->type, list->breed, list->gender, list->age, list->weight);
-
-            /*SetConsoleTextAttribute(hConsole, 10); cout << "Nome";
-            SetConsoleTextAttribute(hConsole, 15); cout << ":" << list->name << endl;
-            SetConsoleTextAttribute(hConsole, 10); cout << "EspÈcie";
-            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->type << endl;
-            SetConsoleTextAttribute(hConsole, 10); cout << "RaÁa";
-            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->breed << endl;
-            if(list->gender == Female)
-            {
-                SetConsoleTextAttribute(hConsole, 10); cout << "Sexo";
-                SetConsoleTextAttribute(hConsole, 15); cout << ": ";
-                SetConsoleTextAttribute(hConsole, 13); cout <<"FÍmea"<< endl;
-            }
-            else
-            { 
-                SetConsoleTextAttribute(hConsole, 10); cout << "Sexo: ";
-                SetConsoleTextAttribute(hConsole, 11); cout <<"Macho" << endl;
-            }
-            SetConsoleTextAttribute(hConsole, 10); cout << "Idade";
-            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->age << " anos" << endl;
-            SetConsoleTextAttribute(hConsole, 10); cout << "Peso";
-            SetConsoleTextAttribute(hConsole, 15); cout << ": " << list->weight << "kg" << endl << endl;*/
             count++;
         }
         list = list->next;
@@ -502,9 +438,11 @@ pet* searchByName(pet *list, char name[]) {
     SetConsoleTextAttribute(hConsole, 15); cout << "Encontrado ["; 
     SetConsoleTextAttribute(hConsole, 10); cout << count;
     if (count > 1){
-        SetConsoleTextAttribute(hConsole, 15); cout << "] pets chamados ";}
+        SetConsoleTextAttribute(hConsole, 15); cout << "] pets chamados [";
+		SetConsoleTextAttribute(hConsole, 13); cout<< name;
+		SetConsoleTextAttribute(hConsole, 15); cout << "]" << endl;}
     else if (count == 1){
-        SetConsoleTextAttribute(hConsole, 15); cout << "] pet(s) chamado ";
+        SetConsoleTextAttribute(hConsole, 15); cout << "] pet chamado ";
         SetConsoleTextAttribute(hConsole, 15); cout<< name << endl;
     }
 
@@ -572,14 +510,12 @@ void searchByTypeAndBreed(pet *list) {
     SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscada: ";
     cin >> type;
     cin.ignore();
-    //tolower(*type); tinha um warning falando que esse 'statement' n diferen√ßa, n altera nada, tem ctz q √© esse msm leo? sera q tem outro jeito? 
 
     SetConsoleTextAttribute(hConsole, 15); cout << "Digite a ";
     SetConsoleTextAttribute(hConsole, 13); cout << "raÁa ";
     SetConsoleTextAttribute(hConsole, 15); cout << "do pet a ser buscada: ";
     cin >> breed;
     cin.ignore();
-    //tolower(*breed); tinha um warning falando que esse 'statement' n diferen√ßa, n altera nada, tem ctz q √© esse msm leo? sera q tem outro jeito? 
     cout << endl;
     while(list) {
         if(strcmp(list->type, type) == 0 && strcmp(list->breed, breed) == 0) {
@@ -715,7 +651,6 @@ void restoreBackup(pet **list, ifstream &infile) {
     int age;
     float weight;
 
-    //head = (pet *)malloc(sizeof(pet));
     while(infile >> code >> name >> type >> breed >> genderInt >> age >> weight) {
         try {
             head = new pet;
@@ -747,7 +682,7 @@ int main() {
     ofstream outfile;
     ifstream infile;
     
-    //SetConsoleTitle("Pets"); // MUDA O TITULO DA JANELA DO CMD//
+    SetConsoleTitle("Pets"); // MUDA O TITULO DA JANELA DO CMD//
     int option;
     char type[11];
     char name[21];
@@ -755,13 +690,16 @@ int main() {
 
     infile.open ("pet_data.txt");
     if(!infile.is_open()){
-        cout << "Save file n„o existe, um novo save file ser· criado para salvar os dados assim que utilizar 0 para Sair do Programa" << endl;
+        SetConsoleTextAttribute(hConsole, 12); cout << "\t\tSave file n„o encontrado ou inexistente" << endl;
+        SetConsoleTextAttribute(hConsole, 9); cout << "\t   Um novo save file ser· criado para salvar os dados" << endl;
     }
     else {
         restoreBackup(&list, infile);
-        SetConsoleTextAttribute(hConsole, 1); cout << "\t\t     Save recuperado com sucesso" << endl;
+        SetConsoleTextAttribute(hConsole, 9); cout << "\t\t     Save recuperado com sucesso" << endl;
     }
     infile.close();
+
+            
     while(true){
     do{
             SetConsoleTextAttribute(hConsole, 14); cout << "=-=-=-=-=-=-=-=--=-=-=-=-=-=";
@@ -794,15 +732,13 @@ int main() {
             SetConsoleTextAttribute(hConsole, 2); cout << "\t\t0 -";
             SetConsoleTextAttribute(hConsole, 15); cout << " Sair e salvar" << endl;
             SetConsoleTextAttribute(hConsole, 14); cout << "=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=";
-            SetConsoleTextAttribute(hConsole, 15); cout << "\nDigite a opÁ„o desejada: ";
+			SetConsoleTextAttribute(hConsole, 15); cout << "\nDigite a opÁ„o desejada: ";
             SetConsoleTextAttribute(hConsole, 2); cin >> option;
             cin.ignore(10000, '\n');
             if (option < 0 || option > 10){
-                //system("cls");
 				SetConsoleTextAttribute(hConsole, 12); cout << "Utilize valores entre 0 e 10\n";}
 			if (cin.fail())
             {
-                //system("cls");
                 SetConsoleTextAttribute(hConsole, 12); cout << "Utilize somente n˙meros!\n";
                 cin.clear();
                 cin.ignore(10000, '\n');
@@ -854,9 +790,10 @@ int main() {
             	if(list == NULL)
 				{
                     SetConsoleTextAttribute(hConsole, 15); cout << "\nA lista est· ";
-                    SetConsoleTextAttribute(hConsole, 12); cout << "vazia.";
+                    SetConsoleTextAttribute(hConsole, 12); cout << "vazia.\n";
 				}
 				else
+                    cout << endl;
 					printPetRec(list);
                 break;
         }

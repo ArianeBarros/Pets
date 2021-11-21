@@ -1,3 +1,4 @@
 1 Mel Gato Siames 0 9 5
 2 Billy Cachorro Spitz_Alemao 1 5 10
 3 Antonella Cachorro Ilhasa_Apso 0 8 5.2
+4 Ozzy Cachorro Pitbull 1 4 25.5
